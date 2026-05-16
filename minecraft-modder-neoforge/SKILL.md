@@ -163,7 +163,7 @@ mod_description=A short description of your mod
 
 ### 注册系统
 
-使用 `DeferredRegister` 系统。物品、方块、附魔、创造模式物品栏等都有对应的 `DeferredRegister`。
+使用 `DeferredRegister` 系统。物品、方块、创造模式物品栏等都有对应的 `DeferredRegister`。
 所有注册项集中在 `init/` 包下管理，在主类构造函数中统一注册到 `modEventBus`。
 
 ```java
@@ -172,9 +172,10 @@ public class YourModItems {
         DeferredRegister.createItems(YourMod.MOD_ID);
 
     public static final DeferredItem<Item> EXAMPLE_ITEM =
-        ITEMS.register("example_item", () -> new Item(new Item.Properties()));
+        ITEMS.register("example_item", (identifier) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, identifier))));
 
-    // 方块使用 DeferredRegister.Blocks，附魔使用 DeferredRegister.Enchantments，以此类推
+    // 方块使用 DeferredRegister.Blocks 、 数据组件使用 DeferredRegister.DataComponents 、 实体使用 DeferredRegister.Entities
+    // 其它注册项直接使用 DeferredRegister<T>
 }
 ```
 
