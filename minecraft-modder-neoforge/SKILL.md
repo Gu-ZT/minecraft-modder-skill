@@ -146,19 +146,6 @@ project_root/
     │           └── neoforge.mods.toml
 ```
 
-`gradle.properties` 关键属性：
-
-```properties
-minecraft_version=26.1.2
-neo_version=26.1.2.36-beta
-mod_id=yourmodid
-mod_name=Your Mod
-mod_version=0.0.1
-mod_group_id=com.example
-mod_authors=YourName
-mod_description=A short description of your mod
-```
-
 ## 代码编写规范
 
 ### 注册系统
@@ -213,44 +200,6 @@ Minecraft 版本更新时，datagen API（如 `DataGenerator`、`PackOutput`、�
 - **战利品表** (`loot_tables/`) — 通过 `LootTableProvider` 生成
 - **方块状态** (`blockstates/`) — 通过 `BlockStateProvider` 生成
 - **标签** (`tags/`) — 通过 `TagProvider` 生成
-
-#### build.gradle 配置
-
-```gradle
-neoForge {
-    runs {
-        data {
-            clientData()
-            programArguments.addAll '--mod', project.mod_id, '--all',
-                '--output', file('src/generated/resources/').getAbsolutePath(),
-                '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-    }
-}
-
-// 将 datagen 输出注册为资源目录
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-// 处理 src/main/templates/ 下的模板文件（如 neoforge.mods.toml）
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
-        minecraft_version: minecraft_version,
-        neo_version      : neo_version,
-        mod_id           : mod_id,
-        mod_name         : mod_name,
-        mod_license      : mod_license,
-        mod_version      : mod_version,
-        mod_authors      : mod_authors,
-        mod_description  : mod_description
-    ]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
-}
-sourceSets.main.resources.srcDir generateModMetadata
-neoForge.ideSyncTask generateModMetadata
-```
 
 #### datagen 入口类（`data/` 包下）
 
