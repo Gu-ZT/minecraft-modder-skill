@@ -109,12 +109,37 @@ project_root/
     │           └── neoforge.mods.toml
 ```
 
+`gradle.properties` 关键属性：
+
+```properties
+minecraft_version=26.1.2
+neo_version=26.1.2.36-beta
+mod_id=yourmodid
+mod_name=Your Mod
+mod_version=0.0.1
+mod_group_id=com.example
+mod_authors=YourName
+mod_description=A short description of your mod
+```
+
 ## 代码编写规范
 
 ### 注册系统
 
 使用 `DeferredRegister` 系统。物品、方块、附魔、创造模式物品栏等都有对应的 `DeferredRegister`。
-所有注册项集中在主类或注册类中管理。
+所有注册项集中在 `init/` 包下管理，在主类构造函数中统一注册到 `modEventBus`。
+
+```java
+public class YourModItems {
+    public static final DeferredRegister.Items ITEMS =
+        DeferredRegister.createItems(YourMod.MOD_ID);
+
+    public static final DeferredItem<Item> EXAMPLE_ITEM =
+        ITEMS.register("example_item", () -> new Item(new Item.Properties()));
+
+    // 方块使用 DeferredRegister.Blocks，附魔使用 DeferredRegister.Enchantments，以此类推
+}
+```
 
 ### 事件系统
 
