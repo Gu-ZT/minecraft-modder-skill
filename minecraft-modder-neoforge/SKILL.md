@@ -4,7 +4,7 @@ description: >-
   提供 Minecraft 模组开发辅助。默认使用 NeoForge 26.1.2 和 Minecraft 26.1.2，
   当用户需要创建新模组、添加物品/方块/实体/合成表、修改配方、处理事件、
   配置数据生成或排查模组崩溃时使用此技能。
-  Triggers: 模组, mod, neoforge, 物品, 方块, 实体, 合成表
+  Triggers: 模组, neoforge, 物品, 方块, 实体, 合成表
 license: MIT
 ---
 
@@ -30,7 +30,7 @@ license: MIT
 - **NeoForge 官方文档：** https://docs.neoforged.net/
 - **NeoForge 迁移入门（Primers）：** https://docs.neoforged.net/primer/docs/
 - **Porting Primers（中文翻译版）：** https://gu-zt.github.io/Porting-Primers/
-- **Mixin：** https://wiki.fabricmc.net/zh_cn:tutorial:mixin_introduction
+- **Mixin：** https://wiki.fabricmc.net/zh_cn:tutorial:mixin_introduction （Mixin 文档由 Fabric 社区维护，适用于所有加载器）
 - **Mixin 示例：** https://wiki.fabricmc.net/zh_cn:tutorial:mixin_examples
 
 常用场景可依赖已知 API（如 `DeferredRegister`），但遇到不熟悉的类、方法签名或跨版本差异时，必须查阅文档确认。
@@ -96,11 +96,11 @@ project_root/
     │   │   ├── data/               # datagen（语言、模型、配方、战利品表）
     │   │   ├── init/               # 注册项（物品、方块、创造模式物品栏等）
     │   │   ├── mixin/
-    │   │   ├── network/            # 网络包
-    │   │   └── util/
+    │   │   ├── network/            # 网络包（如需要）
+    │   │   └── util/               # 工具类（如需要）
     │   ├── resources/
     │   │   ├── META-INF/
-    │   │   │   └── accesstransformer.cfg
+    │   │   │   └── accesstransformer.cfg  # （可选，仅需访问私有字段、方法、类时）
     │   │   ├── <modid>.mixins.json
     │   │   └── assets/<modid>/
     │   │       └── textures/       # 仅手动管理的纹理
@@ -119,6 +119,21 @@ project_root/
 ### 事件系统
 
 在 `@Mod` 主类中订阅事件。通常在主类的构造函数中调用 `modEventBus.addListener(this::someMethod)`。
+
+`@Mod` 主类最小示例：
+
+```java
+@Mod(YourMod.MOD_ID)
+public class YourMod {
+    public static final String MOD_ID = "yourmodid";
+
+    public YourMod(IEventBus modEventBus, ModContainer modContainer) {
+        YourModItems.ITEMS.register(modEventBus);
+        YourModBlocks.BLOCKS.register(modEventBus);
+        YourModItemGroups.TABS.register(modEventBus);
+    }
+}
+```
 
 ### 数据生成（Datagen-First）
 
