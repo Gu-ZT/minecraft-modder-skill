@@ -239,6 +239,52 @@ public class YourModLanguageProvider extends LanguageProvider {
 
 - 仅在必要时建议使用 Mixin，并提供清晰的使用理由和示例。
 
+### 单元测试
+
+MDG 支持通过 JUnit 对模组进行单元测试，可在测试中引用 Minecraft 类。
+
+#### build.gradle 配置
+
+```gradle
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+neoForge {
+    unitTest {
+        enable()
+        testedMod = mods."${mod_id}"    // 指定被测试的 mod
+    }
+}
+```
+
+#### 加载服务端
+
+若测试需要服务端环境，引入 testframework：
+
+```gradle
+dependencies {
+    testImplementation "net.neoforged:testframework:${neo_version}"
+}
+```
+
+```java
+@ExtendWith(EphemeralTestServerProvider.class)
+public class TestClass {
+    @Test
+    public void testMethod(MinecraftServer server) {
+        // 在服务端上下文中执行测试...
+    }
+}
+```
+
+运行测试：`./gradlew test`（单元测试）/ `./gradlew runGameTestServer`（GameTest）
+
 ## 资源文件要求
 
 生成物品或方块时，必须同时提供：
@@ -254,7 +300,8 @@ public class YourModLanguageProvider extends LanguageProvider {
 - 运行客户端：`./gradlew runClient`
 - 运行服务器：`./gradlew runServer`
 - 运行数据生成：`./gradlew runData`
-- 运行测试：`./gradlew runGameTestServer`
+- 运行单元测试：`./gradlew test`
+- 运行 GameTest：`./gradlew runGameTestServer`
 
 ## 常见任务清单
 
@@ -280,6 +327,9 @@ public class YourModLanguageProvider extends LanguageProvider {
 
 6. **调试崩溃** — 分析日志，定位注册问题或 Mixin 冲突，给出修复建议。
     - ✅ 验证：复现步骤 → 定位根因 → 给出修改方案 → 确认修复后崩溃不再出现。
+
+7. **编写测试** — 为关键逻辑编写 JUnit 单元测试或 GameTest。
+    - ✅ 验证：`./gradlew test` 全部通过；若需服务端环境则引入 `testframework` 并使用 `@ExtendWith(EphemeralTestServerProvider.class)`。
 
 始终用简体中文与用户交流，代码注释保持中文。在回复的最后，可以建议下一步操作或需要补充的资源。
 
