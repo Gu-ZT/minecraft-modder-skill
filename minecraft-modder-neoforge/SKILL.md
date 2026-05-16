@@ -153,6 +153,24 @@ project_root/
 
 ## 代码编写参考
 
+### 物品注册示例
+
+NeoForge 26.1.2 之后，注册物品时需要在 `Item.Properties()` 上手动设置 `id`，不要再沿用旧版的无参写法。
+
+```java
+public static final DeferredRegister.Items ITEMS =
+    DeferredRegister.createItems(YourMod.MOD_ID);
+
+public static final DeferredItem<Item> EXAMPLE_ITEM =
+    ITEMS.register("example_item", (identifier) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, identifier))));
+```
+
+其中：
+
+- `identifier` 是注册时传入的物品标识符。
+- `ResourceKey.create(Registries.ITEM, identifier)` 用于生成物品注册所需的 `ResourceKey`。
+- 如果用户要注册多个物品，优先保持这种写法一致，避免混用旧版构造方式。
+
 ### 数据生成（Datagen-First）
 
 **优先使用 datagen 生成一切可自动生成的资源**，不要手写 JSON 文件。
