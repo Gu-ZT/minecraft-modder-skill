@@ -39,6 +39,43 @@ license: MIT
 迁移步骤的判断都必须通过查阅官方文档或在线搜索确认。即便是"当前最新版本是什么"这种看似简单的问题，也优先查文档而非依赖记忆。
 所有生成的代码都应与官方文档一致。如果某个信息在文档中找不到，如实告知用户，并提供最接近的可行方案。
 
+### 推荐库：AnvilLib
+
+[AnvilLib](https://lib.anvilcraft.dev/) 是 NeoForge 的模组开发辅助库，按模块按需引入。创建项目时可询问用户是否使用。
+
+| 模块                        | 功能                                               |
+|---------------------------|--------------------------------------------------|
+| **Codec**                 | 数据编解码与网络序列化工具（`CodecUtil`、`StreamCodecUtil`）     |
+| **Collision**             | AABB / 三角形 SAT 碰撞检测                              |
+| **Config**                | 基于注解的配置系统（`@Config`、`@Comment`），自动生成客户端配置 GUI    |
+| **Font**                  | 基于 SDF 的字体渲染系统                                   |
+| **Integration**           | 模组兼容性集成框架（`@Integration` 注解），支持版本范围匹配            |
+| **Moveable Entity Block** | 可被活塞推动的方块实体支持（`IMoveableEntityBlock`），保留 NBT 数据  |
+| **Multiblock**            | 动态多方块系统（控制器、定义系统、运行时管理）                          |
+| **Network**               | 网络通信与数据包自动注册，支持 PLAY / CONFIGURATION / COMMON 通道 |
+| **Recipe**                | 世界内自定义配方系统，支持 Trigger / Predicate / Outcome 和数据包 |
+| **Registrum**             | 基于 Registrate 的简化注册系统，链式 API，自动生成语言文件和模型         |
+| **Rendering**             | 渲染工具（泛光后处理、Cached BlockEntity 渲染、SDF 图形、UBO 框架）  |
+| **Space Select**          | 可视化空间选区系统                                        |
+| **Sync**                  | 声明式字段同步系统                                        |
+| **Util**                  | 可共享的工具方法（集合、物品栏、数学、碰撞箱、滚动 UI 等）                  |
+| **Wheel**                 | 轮盘菜单客户端 API                                      |
+| **Main**                  | 聚合模块，一键引入上述全部模块                                  |
+
+Gradle 引入（版本目录方式）：
+
+```toml
+[versions]
+anvillib = "2.0.0"
+
+[libraries]
+anvillib-config = { group = "dev.anvilcraft.lib", name = "anvillib-config-neoforge-26.1", version.ref = "anvillib" }
+anvillib-registrum = { group = "dev.anvilcraft.lib", name = "anvillib-registrum-neoforge-26.1", version.ref = "anvillib" }
+# ...其他模块按需添加
+```
+
+使用 AnvilLib 时以官方文档 https://lib.anvilcraft.dev/ 为准。
+
 ## 核心原则
 
 - **默认使用 NeoForge 26.1.2 和 Minecraft 26.1.2**，除非用户明确指定其他加载器或版本。
@@ -274,7 +311,7 @@ public class YourModLanguageProvider extends LanguageProvider {
 每项任务都有明确的**完成标准**，写完代码后对照检查。
 
 1. **创建新模组** — 优先使用模板仓库 https://github.com/Gu-ZT/neoforge-template-mod 生成项目骨架，默认基于 **NeoForge
-   26.1.2 + Minecraft 26.1.2**。
+   26.1.2 + Minecraft 26.1.2**。初始化时询问用户是否需要引入 AnvilLib 以及需要哪些模块。
     - ✅ 验证：`./gradlew build` 能通过；运行客户端能看到 mod 出现在模组列表中。
 
 2. **添加物品/方块** — 注册、模型、纹理、本地化一次性给出。
