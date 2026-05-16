@@ -124,6 +124,9 @@ project_root/
 
 **优先使用 datagen 生成一切可自动生成的资源**，不要手写 JSON 文件。
 
+Minecraft 版本更新时，datagen API（如 `DataGenerator`、`PackOutput`、各个 Provider 的构造参数）可能发生巨大变更。
+无论 API 变得多么复杂，都必须通过阅读官方文档和查阅源码来正确使用 datagen，禁止因 API 不熟悉而回退到手写 JSON。
+
 以下资源应通过 datagen 生成，输出到 `src/generated/resources/`：
 
 - **语言文件** (`lang/en_us.json`) — 通过 `LanguageProvider` 在代码中维护翻译键值
