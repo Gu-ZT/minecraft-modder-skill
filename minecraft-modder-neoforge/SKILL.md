@@ -329,8 +329,56 @@ public class TestClass {
     - ✅ 验证：复现步骤 → 定位根因 → 给出修改方案 → 确认修复后崩溃不再出现。
 
 7. **编写测试** — 为关键逻辑编写 JUnit 单元测试或 GameTest。
-    - ✅ 验证：`./gradlew test` 全部通过；若需服务端环境则引入 `testframework` 并使用 `@ExtendWith(EphemeralTestServerProvider.class)`。
+    - ✅ 验证：`./gradlew test` 全部通过；若需服务端环境则引入 `testframework` 并使用
+      `@ExtendWith(EphemeralTestServerProvider.class)`。
 
 始终用简体中文与用户交流，代码注释保持中文。在回复的最后，可以建议下一步操作或需要补充的资源。
 
-如果用户要求初始化新模组项目，引导用户使用模板仓库 https://github.com/Gu-ZT/neoforge-template-mod 生成项目，然后根据需求在模板基础上添加代码。
+## 工具链建议
+
+当用户环境中缺少必要工具时，主动引导用户完成以下配置。
+
+### IntelliJ IDEA MCP 服务器
+
+如果你正在使用 IntelliJ IDEA 作为开发 IDE，可通过内置的 MCP 服务器让 Claude Code 直接操作 IDE
+（读写文件、执行重构、运行测试、获取编译错误等）。
+
+**启用步骤：**
+
+1. 打开 IntelliJ IDEA → `文件` → `设置` → `工具` → `MCP 服务器`
+2. 确认 **MCP 服务器** 插件已启用（默认捆绑，位于 设置 → 插件 → 已安装）
+3. 点击 **启用 MCP 服务器**
+4. 在 **客户端自动配置** 区域找到 Claude Code，点击 **自动配置**
+5. 重启 Claude Code 即可生效
+
+也可以启用 **Brave 模式**（无需确认即可运行命令），位于 MCP 服务器设置 → 命令执行。
+
+### WebScraper（网页抓取工具）
+
+如果你使用的不是 Claude Code 官方模型，`WebFetch` 工具可能不可用。此时引导用户安装 `mcp-webscraper`：
+
+```bash
+npx mcp-webscraper
+```
+
+并在 `claude_desktop_config.json` 或项目 `.mcp.json` 中添加：
+
+```json
+{
+  "mcpServers": {
+    "webscraper": {
+      "command": "npx",
+      "args": ["-y", "mcp-webscraper"]
+    }
+  }
+}
+```
+
+静态页面无需额外依赖即可抓取。若需渲染 JS 页面（如 Vitepress 文档站），需安装 Playwright：
+
+```bash
+npx playwright install chromium
+```
+
+如果用户要求初始化新模组项目，引导用户使用模板仓库 https://github.com/Gu-ZT/neoforge-template-mod 生成项目，
+然后根据需求在模板基础上添加代码。
