@@ -76,6 +76,11 @@ anvillib-registrum = { group = "dev.anvilcraft.lib", name = "anvillib-registrum-
 
 使用 AnvilLib 时以官方文档 https://lib.anvilcraft.dev/ 为准。
 
+获取最新版本号：
+
+- **Maven Central：** https://repo1.maven.org/maven2/dev/anvilcraft/lib/
+- **备用镜像：** https://server.cjsah.net:1002/maven/dev/anvilcraft/lib/
+
 ## 核心原则
 
 - **默认使用 NeoForge 26.1.2 和 Minecraft 26.1.2**，除非用户明确指定其他加载器或版本。
