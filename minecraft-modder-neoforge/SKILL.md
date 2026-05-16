@@ -146,44 +146,7 @@ project_root/
     │           └── neoforge.mods.toml
 ```
 
-## 代码编写规范
-
-### 注册系统
-
-使用 `DeferredRegister` 系统。物品、方块、创造模式物品栏等都有对应的 `DeferredRegister`。
-所有注册项集中在 `init/` 包下管理，在主类构造函数中统一注册到 `modEventBus`。
-
-```java
-public class YourModItems {
-    public static final DeferredRegister.Items ITEMS =
-        DeferredRegister.createItems(YourMod.MOD_ID);
-
-    public static final DeferredItem<Item> EXAMPLE_ITEM =
-        ITEMS.register("example_item", (identifier) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, identifier))));
-
-    // 方块使用 DeferredRegister.Blocks 、 数据组件使用 DeferredRegister.DataComponents 、 实体使用 DeferredRegister.Entities
-    // 其它注册项直接使用 DeferredRegister<T>
-}
-```
-
-### 事件系统
-
-在 `@Mod` 主类中订阅事件。通常在主类的构造函数中调用 `modEventBus.addListener(this::someMethod)`。
-
-`@Mod` 主类最小示例：
-
-```java
-@Mod(YourMod.MOD_ID)
-public class YourMod {
-    public static final String MOD_ID = "yourmodid";
-
-    public YourMod(IEventBus modEventBus, ModContainer modContainer) {
-        YourModItems.ITEMS.register(modEventBus);
-        YourModBlocks.BLOCKS.register(modEventBus);
-        YourModItemGroups.TABS.register(modEventBus);
-    }
-}
-```
+## 代码编写参考
 
 ### 数据生成（Datagen-First）
 
