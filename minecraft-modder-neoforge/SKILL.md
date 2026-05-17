@@ -4,7 +4,7 @@ description: >-
   提供 Minecraft 模组开发辅助。默认使用 NeoForge 26.1.2 和 Minecraft 26.1.2，
   当用户需要创建新模组、添加物品/方块/实体/合成表、修改配方、处理事件、
   配置数据生成或排查模组崩溃时使用此技能。
-  Triggers: 模组, neoforge, 物品, 方块, 实体, 合成表
+  Triggers: 模组, neoforge, 物品, 方块, 实体, 合成表, 配方, datagen, 数据生成, mixin, 测试
 license: MIT
 ---
 
@@ -153,23 +153,21 @@ project_root/
 
 ## 代码编写参考
 
-### 物品注册示例
+### 注册
 
-NeoForge 26.1.2 之后，注册物品时需要在 `Item.Properties()` 上手动设置 `id`，不要再沿用旧版的无参写法。
+使用 `DeferredRegister` 系统，注册项集中在 `init/` 包下。**NeoForge 26.1.2
+起，注册物品时必须通过 `Item.Properties().setId(...)` 显式设置 id。**
 
 ```java
 public static final DeferredRegister.Items ITEMS =
     DeferredRegister.createItems(YourMod.MOD_ID);
 
 public static final DeferredItem<Item> EXAMPLE_ITEM =
-    ITEMS.register("example_item", (identifier) -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, identifier))));
+    ITEMS.register("example_item", id -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, id))));
 ```
 
-其中：
-
-- `identifier` 是注册时传入的物品标识符。
-- `ResourceKey.create(Registries.ITEM, identifier)` 用于生成物品注册所需的 `ResourceKey`。
-- 如果用户要注册多个物品，优先保持这种写法一致，避免混用旧版构造方式。
+`DeferredRegister` 只有四个内置子类：`Blocks`、`DataComponents`、`Entities`、`Items`。其他注册类型（附魔、创造模式物品栏等）直接使用
+`DeferredRegister<T>` 泛型。
 
 ### 数据生成（Datagen-First）
 
@@ -177,6 +175,8 @@ public static final DeferredItem<Item> EXAMPLE_ITEM =
 
 Minecraft 版本更新时，datagen API（如 `DataGenerator`、`PackOutput`、各个 Provider 的构造参数）可能发生巨大变更。
 无论 API 变得多么复杂，都必须通过阅读官方文档和查阅源码来正确使用 datagen，禁止因 API 不熟悉而回退到手写 JSON。
+
+---
 
 以下资源应通过 datagen 生成，输出到 `src/generated/resources/`：
 
@@ -398,5 +398,3 @@ npx mcp-webscraper
 npx playwright install chromium
 ```
 
-如果用户要求初始化新模组项目，引导用户使用模板仓库 https://github.com/Gu-ZT/neoforge-template-mod 生成项目，
-然后根据需求在模板基础上添加代码。
