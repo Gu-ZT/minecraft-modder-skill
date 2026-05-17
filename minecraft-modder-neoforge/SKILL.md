@@ -317,6 +317,7 @@ public class TestClass {
 
 1. **创建新模组** — 优先使用模板仓库 https://github.com/Gu-ZT/neoforge-template-mod 生成项目骨架，默认基于 **NeoForge
    26.1.2 + Minecraft 26.1.2**。初始化时询问用户是否需要引入 AnvilLib 以及需要哪些模块。
+    - 确定许可证：代码默认使用 **LGPL-3.0**，资源文件（纹理、模型等）默认使用 **ARR（All Rights Reserved）**。若用户有特殊需求则按用户要求调整。
     - 同步帮助用户初始化 Git 仓库并创建 `README.md`（包含 mod 简介、构建和运行说明）。
     - ✅ 验证：`./gradlew build` 能通过；运行客户端能看到 mod 出现在模组列表中。
 
