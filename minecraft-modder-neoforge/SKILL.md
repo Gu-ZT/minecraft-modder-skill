@@ -361,6 +361,14 @@ public class TestClass {
 
 也可以启用 **Brave 模式**（无需确认即可运行命令），位于 MCP 服务器设置 → 命令执行。
 
+### Git
+
+创建模组项目需要 Git。当用户环境中未安装 Git 时，先搜索当前操作系统下 Git 的最新安装指南，引导用户完成安装。克隆模板仓库时需要 Git：
+
+```bash
+git clone https://github.com/Gu-ZT/neoforge-template-mod.git
+```
+
 ### WebScraper（网页抓取工具）
 
 如果你使用的不是 Claude Code 官方模型，`WebFetch` 工具可能不可用。此时引导用户安装 `mcp-webscraper`：
