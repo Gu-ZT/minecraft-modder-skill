@@ -48,6 +48,31 @@ license: MIT
   （例如 MIT 可自由使用；GPL 要求你的项目也以 GPL 开源；ARR 默认禁止使用）。不得违反原项目的许可证条款。
 - **学习思路，不盲目复制** — 优先理解其设计思路后在自己的项目结构下重新实现，而非直接粘贴代码。
 
+#### 查阅依赖源码
+
+有时需要查看前置模组或依赖库的具体实现才能正确调用其 API。此时可将依赖的源码提取到本地查阅：
+
+1. **优先使用 sources.jar** — Gradle 下载依赖时会同时拉取 `-sources.jar`，将其解压到项目 `reference/` 目录下即可浏览源码。
+2. **反编译兜底** — 若依赖未提供 sources.jar，可使用 IDEA 内置的 java-decompiler 命令行反编译：
+
+   ```bash
+   java -cp "${IDEA_PATH}/plugins/java-decompiler/lib/java-decompiler.jar" \
+        org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler \
+        -dgs=true \
+        "<待反编译的JAR文件>" \
+        "<输出目录>"
+   ```
+   
+   命令执行后输出目录下会生成一个 `.jar` 文件，需再解压该 jar 才能得到 `.java` 源码：
+   
+   ```bash
+   # 假设输出到 reference/ ，生成的文件类似 reference/<modid>.jar
+   unzip reference/<modid>.jar -d reference/<modid>/
+   ```
+   
+   `${IDEA_PATH}` 替换为本地 IntelliJ IDEA 安装路径。
+3. **必须加入 .gitignore** — `reference/` 目录必须添加到 `.gitignore`，防止将他人代码意外发布。
+
 ### 推荐库：AnvilLib
 
 [AnvilLib](https://lib.anvilcraft.dev/) 是 NeoForge 的模组开发辅助库，按模块按需引入。创建项目时可询问用户是否使用。
