@@ -52,7 +52,7 @@ license: MIT
 
 有时需要查看前置模组或依赖库的具体实现才能正确调用其 API。此时可将依赖的源码提取到本地查阅：
 
-1. **优先使用 sources.jar** — Gradle 下载依赖时会同时拉取 `-sources.jar`，将其解压到项目 `reference/` 目录下即可浏览源码。
+1. **优先使用 sources.jar** — Gradle 下载依赖时会同时拉取 `-sources.jar`，将其解压到项目 `ref/` 目录下即可浏览源码。
 2. **反编译兜底** — 若依赖未提供 sources.jar，可使用 IDEA 内置的 java-decompiler 命令行反编译：
 
    ```bash
@@ -66,12 +66,12 @@ license: MIT
    命令执行后输出目录下会生成一个 `.jar` 文件，需再解压该 jar 才能得到 `.java` 源码：
    
    ```bash
-   # 假设输出到 reference/ ，生成的文件类似 reference/<modid>.jar
-   unzip reference/<modid>.jar -d reference/<modid>/
+   # 假设输出到 ref/ ，生成的文件类似 ref/<modid>.jar
+   unzip ref/<modid>.jar -d ref/<modid>/
    ```
    
    `${IDEA_PATH}` 替换为本地 IntelliJ IDEA 安装路径。
-3. **必须加入 .gitignore** — `reference/` 目录必须添加到 `.gitignore`，防止将他人代码意外发布。
+3. **必须加入 .gitignore** — `ref/` 目录必须添加到 `.gitignore`，防止将他人代码意外发布。
 
 ### 推荐库：AnvilLib
 
